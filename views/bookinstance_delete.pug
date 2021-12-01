@@ -1,8 +1,8 @@
-extends layout
+extends layout 
 
 block content
 
-  h1 ID: #{bookinstance._id}
+  h1 #{title}: #{bookinstance._id}
 
   p #[strong Title:]
     a(href=bookinstance.book.url) #{bookinstance.book.title}
@@ -18,7 +18,9 @@ block content
 
   if bookinstance.status!='Available'
     p #[strong Due back:] #{bookinstance.due_back_formatted}
-  
-  hr
-  p
-    a(href=bookinstance.url+'/delete') Delete book instance
+  p Do you really want to delete this Book?
+
+    form(method='POST' action='')
+      div.form-group
+        input#bookinstanceid.form-control(type='hidden', name='bookinstanceid', required='true', value=bookinstance.id)
+      button.btn.btn-danger(type='submit') Delete
