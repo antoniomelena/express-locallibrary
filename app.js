@@ -7,7 +7,7 @@ const logger = require("morgan");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
-const compression = require("compression");
+var compression = require("compression");
 var helmet = require("helmet");
 
 const app = express();
