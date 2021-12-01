@@ -8,6 +8,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
 const compression = require("compression");
+var helmet = require("helmet");
 
 const app = express();
 
@@ -21,6 +22,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 //Compress all routes
 app.use(compression());
+app.use(helmet());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
