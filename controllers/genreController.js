@@ -101,7 +101,7 @@ exports.genre_create_post = [
 ];
 
 // Display Genre delete form on GET.
-exports.genre_delete_get = function (req, res) {
+exports.genre_delete_get = function (req, res, next) {
   async.parallel(
     {
       genre: function (callback) {
@@ -129,7 +129,7 @@ exports.genre_delete_get = function (req, res) {
 };
 
 // Handle Genre delete on POST.
-exports.genre_delete_post = function (req, res) {
+exports.genre_delete_post = function (req, res, next) {
   async.parallel(
     {
       genre: function (callback) {
