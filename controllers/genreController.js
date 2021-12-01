@@ -2,6 +2,7 @@ const Genre = require("../models/genre");
 const Book = require("../models/book");
 const async = require("async");
 const { body, validationResult } = require("express-validator");
+const bookinstance = require("../models/bookinstance");
 
 // Display list of all Genre.
 exports.genre_list = function (req, res, next) {
@@ -166,11 +167,51 @@ exports.genre_delete_post = function (req, res, next) {
 };
 
 // Display Genre update form on GET.
-// exports.genre_update_get = function (req, res) {
-//   res.send("NOT IMPLEMENTED: Genre update GET");
-// };
+exports.genre_update_get = function (req, res, next) {
+  Genre.findById(req.params.id, function (err, genre) {
+    if (err) {
+      return next(err);
+    }
+    if (genre == null) {
+      const err = new Error("Genre not found");
+      err.status = 404;
+      return next(err);
+    }
+    res.render("genre_form", { title: "Update Genre", genre });
+  });
+};
 
 // Handle Genre update on POST.
-// exports.genre_update_post = function (req, res) {
-//   res.send("NOT IMPLEMENTED: Genre update POST");
-// };
+exports.genre_update_post = [
+  body("name", "Genre name must container at least 3 characters")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  function (req, res, next) {
+    const errors = validationResult(req);
+    var genre = new Genre({
+      name: req.body.name,
+      _id: req.params.id,
+    });
+    if (!errors.isEmpty()) {
+      res.render("genre_form", {
+        title: "Update Genre",
+        genre,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      Genre.findByIdAndUpdate(
+        req.params.id,
+        genre,
+        {},
+        function (err, thegenre) {
+          if (err) {
+            return next(err);
+          }
+          res.redirect(thegenre.url);
+        }
+      );
+    }
+  },
+];

@@ -34,7 +34,6 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-//Compress all routes
 app.use(compression());
 app.use(helmet());
 
